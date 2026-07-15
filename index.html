@@ -1,219 +1,234 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Notes Desk — Community Study Library</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Archivo+Narrow:wght@500;600;700&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-<link rel="stylesheet" href="style.css">
+  <meta name="google-adsense-account" content="ca-pub-1833672908532855">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Notes Desk — Community Study Library</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Archivo+Narrow:wght@500;600;700&display=swap"
+    rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<header class="desk-header">
-  <div class="header-inner">
-    <div>
-      <p class="brand-eyebrow">Community Study Library</p>
-      <h1 class="brand-title">The Notes Desk</h1>
-      <p class="brand-sub">Upload what helped you. Rate what helped others. The best notes rise to the top of the stack.</p>
-    </div>
-    <div class="header-right">
-      <div class="desk-stats">
-        <span><strong id="statTotal">0</strong>notes on file</span>
-        <span id="statVotes">0 total votes recorded</span>
+  <header class="desk-header">
+    <div class="header-inner">
+      <div>
+        <p class="brand-eyebrow">Community Study Library</p>
+        <h1 class="brand-title">The Notes Desk</h1>
+        <p class="brand-sub">Upload what helped you. Rate what helped others. The best notes rise to the top of the
+          stack.</p>
       </div>
-      <div class="header-controls">
-        <button class="btn-ghost" id="leaderboardBtn">🏆 Leaderboard</button>
-        <div class="auth-widget" id="authWidget">
-          <button class="btn-ghost" id="openLoginBtn">Sign in</button>
-          <button class="btn-ghost" id="openRegisterBtn">Register</button>
+      <div class="header-right">
+        <div class="desk-stats">
+          <span><strong id="statTotal">0</strong>notes on file</span>
+          <span id="statVotes">0 total votes recorded</span>
         </div>
-      </div>
-    </div>
-  </div>
-</header>
-
-<main>
-
-  <section class="panel upload-panel">
-    <h2 style="font-family:var(--font-display); font-size:1.05rem; margin:.6rem 0 0;">Add a note to the stack</h2>
-
-    <div class="signin-gate hidden" id="signinGate">
-      <span>Sign in to shelve a note — every upload is tied to your account.</span>
-      <button id="gateSignInBtn">Sign in</button>
-    </div>
-
-    <form id="uploadForm">
-      <div class="upload-grid">
-        <div class="field">
-          <label for="fTitle">Title</label>
-          <input type="text" id="fTitle" placeholder="e.g. Programming in C - Unit 1" required>
-        </div>
-        <div class="field">
-          <label for="fCourse">Course</label>
-          <input type="text" id="fCourse" placeholder="e.g. B.Sc. Computer Science" required>
-        </div>
-        <div class="field">
-          <label for="fYear">Year</label>
-          <select id="fYear" required>
-            <option value="" disabled selected>Select year</option>
-            <option>FY</option><option>SY</option><option>TY</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="fSubject">Subject</label>
-          <input type="text" id="fSubject" placeholder="e.g. Programming in C" required>
-        </div>
-        <div class="field">
-          <label for="fCategory">Type</label>
-          <select id="fCategory">
-            <option value="notes" selected>Study Notes</option>
-            <option value="question-paper">Previous Year Question Paper</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="fUploader">Uploading as</label>
-          <input type="text" id="fUploader" disabled placeholder="Sign in first">
-        </div>
-        <div class="field">
-          <label for="fFile">File</label>
-          <input type="file" id="fFile">
+        <div class="header-controls">
+          <button class="btn-ghost" id="leaderboardBtn">🏆 Leaderboard</button>
+          <div class="auth-widget" id="authWidget">
+            <button class="btn-ghost" id="openLoginBtn">Sign in</button>
+            <button class="btn-ghost" id="openRegisterBtn">Register</button>
+          </div>
         </div>
       </div>
-      <div class="upload-actions">
-        <button type="submit" class="btn-primary" id="uploadBtn" disabled>Shelve this note</button>
-        <span class="form-note" id="fileNote">No file attached — title and course info still get catalogued. (Files under 700KB.)</span>
-      </div>
-    </form>
-  </section>
-
-  <div class="section-tabs" id="sectionTabs">
-    <button class="section-tab active" data-category="notes">📓 Study Notes</button>
-    <button class="section-tab" data-category="question-paper">📚 Question Papers</button>
-  </div>
-
-  <section class="catalog-controls">
-    <select id="filterCourse"><option value="">All courses</option></select>
-    <select id="filterYear">
-      <option value="">All years</option>
-      <option>FY</option><option>SY</option><option>TY</option>
-    </select>
-    <select id="filterSubject"><option value="">All subjects</option></select>
-    <input type="search" id="searchBox" placeholder="Search by title…">
-    <label class="following-toggle">
-      <input type="checkbox" id="followingOnlyToggle" disabled>
-      ❤️ Following only
-    </label>
-  </section>
-
-  <p class="results-count" id="resultsCount">Loading the catalog…</p>
-
-  <section class="stack" id="notesStack"></section>
-
-</main>
-
-<footer>
-  Sorted by community score — likes minus dislikes, best notes first. Notes and votes are stored in Firestore and shared by everyone.
-</footer>
-
-<!-- ---------- Auth modal ---------- -->
-<div class="modal-overlay hidden" id="authModal">
-  <div class="modal-card">
-    <button class="modal-close" id="closeModalBtn" aria-label="Close">✕</button>
-    <div class="modal-tabs">
-      <button id="tabLogin" class="active">Sign in</button>
-      <button id="tabRegister">Register</button>
     </div>
+  </header>
 
-    <div id="loginPane">
-      <h2>Welcome back</h2>
-      <p class="modal-sub">Sign in to upload notes and vote.</p>
-      <form id="loginForm">
-        <div class="field" style="margin-bottom:.8rem;">
-          <label for="loginEmail">Email</label>
-          <input type="email" id="loginEmail" required>
+  <main>
+
+    <section class="panel upload-panel">
+      <h2 style="font-family:var(--font-display); font-size:1.05rem; margin:.6rem 0 0;">Add a note to the stack</h2>
+
+      <div class="signin-gate hidden" id="signinGate">
+        <span>Sign in to shelve a note — every upload is tied to your account.</span>
+        <button id="gateSignInBtn">Sign in</button>
+      </div>
+
+      <form id="uploadForm">
+        <div class="upload-grid">
+          <div class="field">
+            <label for="fTitle">Title</label>
+            <input type="text" id="fTitle" placeholder="e.g. Programming in C - Unit 1" required>
+          </div>
+          <div class="field">
+            <label for="fCourse">Course</label>
+            <input type="text" id="fCourse" placeholder="e.g. B.Sc. Computer Science" required>
+          </div>
+          <div class="field">
+            <label for="fYear">Year</label>
+            <select id="fYear" required>
+              <option value="" disabled selected>Select year</option>
+              <option>FY</option>
+              <option>SY</option>
+              <option>TY</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="fSubject">Subject</label>
+            <input type="text" id="fSubject" placeholder="e.g. Programming in C" required>
+          </div>
+          <div class="field">
+            <label for="fCategory">Type</label>
+            <select id="fCategory">
+              <option value="notes" selected>Study Notes</option>
+              <option value="question-paper">Previous Year Question Paper</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="fUploader">Uploading as</label>
+            <input type="text" id="fUploader" disabled placeholder="Sign in first">
+          </div>
+          <div class="field">
+            <label for="fFile">File(s)</label>
+            <input type="file" id="fFile" accept="image/*,application/pdf" multiple>
+          </div>
         </div>
-        <div class="field" style="margin-bottom:.4rem;">
-          <label for="loginPassword">Password</label>
-          <input type="password" id="loginPassword" required minlength="6">
+        <div class="upload-actions">
+          <button type="submit" class="btn-primary" id="uploadBtn" disabled>Shelve this note</button>
+          <span class="form-note" id="fileNote">No files attached — title and course info still get catalogued.
+            (Combined size under 5MB.)</span>
         </div>
-        <p class="auth-error" id="loginError"></p>
-        <button type="submit" class="btn-primary" style="width:100%; margin-top:.6rem;">Sign in</button>
       </form>
+    </section>
+
+    <div class="section-tabs" id="sectionTabs">
+      <button class="section-tab active" data-category="notes">📓 Study Notes</button>
+      <button class="section-tab" data-category="question-paper">📚 Question Papers</button>
     </div>
 
-    <div id="registerPane" class="hidden">
-      <h2>Join the desk</h2>
-      <p class="modal-sub">Create an account to start sharing notes.</p>
-      <form id="registerForm">
-        <div class="field" style="margin-bottom:.8rem;">
-          <label for="regName">Display name</label>
-          <input type="text" id="regName" required placeholder="e.g. Aisha K.">
-        </div>
-        <div class="field" style="margin-bottom:.8rem;">
-          <label for="regEmail">Email</label>
-          <input type="email" id="regEmail" required>
-        </div>
-        <div class="field" style="margin-bottom:.4rem;">
-          <label for="regPassword">Password</label>
-          <input type="password" id="regPassword" required minlength="6" placeholder="At least 6 characters">
-        </div>
-        <p class="auth-error" id="registerError"></p>
-        <button type="submit" class="btn-primary" style="width:100%; margin-top:.6rem;">Create account</button>
-      </form>
-    </div>
-  </div>
-</div>
+    <section class="catalog-controls">
+      <select id="filterCourse">
+        <option value="">All courses</option>
+      </select>
+      <select id="filterYear">
+        <option value="">All years</option>
+        <option>FY</option>
+        <option>SY</option>
+        <option>TY</option>
+      </select>
+      <select id="filterSubject">
+        <option value="">All subjects</option>
+      </select>
+      <input type="search" id="searchBox" placeholder="Search by title…">
+      <label class="following-toggle">
+        <input type="checkbox" id="followingOnlyToggle" disabled>
+        ❤️ Following only
+      </label>
+    </section>
 
-<!-- ---------- Leaderboard modal ---------- -->
-<div class="modal-overlay hidden" id="leaderboardModal">
-  <div class="modal-card wide">
-    <button class="modal-close" id="closeLeaderboardBtn" aria-label="Close">✕</button>
-    <h2>🏆 Top Contributors</h2>
-    <p class="modal-sub">Ranked by total likes earned across all their uploaded notes.</p>
-    <div class="leaderboard-list" id="leaderboardList"></div>
-  </div>
-</div>
+    <p class="results-count" id="resultsCount">Loading the catalog…</p>
 
-<!-- ---------- Profile modal ---------- -->
-<div class="modal-overlay hidden" id="profileModal">
-  <div class="modal-card wide">
-    <button class="modal-close" id="closeProfileBtn" aria-label="Close">✕</button>
-    <div class="profile-header">
-      <div class="profile-avatar" id="profileAvatar">?</div>
-      <div style="flex:1;">
-        <h2 id="profileName" style="margin:0;">Contributor</h2>
-        <p class="modal-sub" style="margin:.2rem 0 0;" id="profileSub"></p>
+    <section class="stack" id="notesStack"></section>
+
+  </main>
+
+  <footer>
+    Sorted by community score — likes minus dislikes, best notes first. Notes and votes are stored in Firestore and
+    shared by everyone.
+  </footer>
+
+  <!-- ---------- Auth modal ---------- -->
+  <div class="modal-overlay hidden" id="authModal">
+    <div class="modal-card">
+      <button class="modal-close" id="closeModalBtn" aria-label="Close">✕</button>
+      <div class="modal-tabs">
+        <button id="tabLogin" class="active">Sign in</button>
+        <button id="tabRegister">Register</button>
       </div>
-      <button class="profile-follow-btn hidden" id="profileFollowBtn">+ Follow</button>
-    </div>
-    <div class="profile-stats">
-      <div class="profile-stat"><strong id="profileNotesCount">0</strong><span>Notes uploaded</span></div>
-      <div class="profile-stat"><strong id="profileTotalLikes">0</strong><span>Likes earned</span></div>
-      <div class="profile-stat"><strong id="profileTotalDislikes">0</strong><span>Dislikes</span></div>
-      <div class="profile-stat"><strong id="profileFollowers">0</strong><span>Followers</span></div>
-    </div>
-    <div class="profile-notes-list" id="profileNotesList"></div>
-  </div>
-</div>
 
-<!-- ---------- PDF Preview modal ---------- -->
-<div class="modal-overlay hidden" id="previewModal">
-  <div class="modal-card wide">
-    <button class="modal-close" id="closePreviewBtn" aria-label="Close">✕</button>
-    <h2 id="previewTitle">Preview</h2>
-    <p class="modal-sub">Full document preview — scroll to see every page, or download below.</p>
-    <div class="preview-body" id="previewBody">
-      <p class="preview-status">Loading preview…</p>
-    </div>
-    <div class="preview-actions">
-      <a class="btn-primary" id="previewDownloadLink" href="#" download style="display:inline-flex; align-items:center; justify-content:center; text-decoration:none;">⬇ Download this file</a>
+      <div id="loginPane">
+        <h2>Welcome back</h2>
+        <p class="modal-sub">Sign in to upload notes and vote.</p>
+        <form id="loginForm">
+          <div class="field" style="margin-bottom:.8rem;">
+            <label for="loginEmail">Email</label>
+            <input type="email" id="loginEmail" required>
+          </div>
+          <div class="field" style="margin-bottom:.4rem;">
+            <label for="loginPassword">Password</label>
+            <input type="password" id="loginPassword" required minlength="6">
+          </div>
+          <p class="auth-error" id="loginError"></p>
+          <button type="submit" class="btn-primary" style="width:100%; margin-top:.6rem;">Sign in</button>
+        </form>
+      </div>
+
+      <div id="registerPane" class="hidden">
+        <h2>Join the desk</h2>
+        <p class="modal-sub">Create an account to start sharing notes.</p>
+        <form id="registerForm">
+          <div class="field" style="margin-bottom:.8rem;">
+            <label for="regName">Display name</label>
+            <input type="text" id="regName" required placeholder="e.g. Aisha K.">
+          </div>
+          <div class="field" style="margin-bottom:.8rem;">
+            <label for="regEmail">Email</label>
+            <input type="email" id="regEmail" required>
+          </div>
+          <div class="field" style="margin-bottom:.4rem;">
+            <label for="regPassword">Password</label>
+            <input type="password" id="regPassword" required minlength="6" placeholder="At least 6 characters">
+          </div>
+          <p class="auth-error" id="registerError"></p>
+          <button type="submit" class="btn-primary" style="width:100%; margin-top:.6rem;">Create account</button>
+        </form>
+      </div>
     </div>
   </div>
-</div>
 
-<script type="module" src="script.js"></script>
+  <!-- ---------- Leaderboard modal ---------- -->
+  <div class="modal-overlay hidden" id="leaderboardModal">
+    <div class="modal-card wide">
+      <button class="modal-close" id="closeLeaderboardBtn" aria-label="Close">✕</button>
+      <h2>🏆 Top Contributors</h2>
+      <p class="modal-sub">Ranked by total likes earned across all their uploaded notes.</p>
+      <div class="leaderboard-list" id="leaderboardList"></div>
+    </div>
+  </div>
+
+  <!-- ---------- Profile modal ---------- -->
+  <div class="modal-overlay hidden" id="profileModal">
+    <div class="modal-card wide">
+      <button class="modal-close" id="closeProfileBtn" aria-label="Close">✕</button>
+      <div class="profile-header">
+        <div class="profile-avatar" id="profileAvatar">?</div>
+        <div style="flex:1;">
+          <h2 id="profileName" style="margin:0;">Contributor</h2>
+          <p class="modal-sub" style="margin:.2rem 0 0;" id="profileSub"></p>
+        </div>
+        <button class="profile-follow-btn hidden" id="profileFollowBtn">+ Follow</button>
+      </div>
+      <div class="profile-stats">
+        <div class="profile-stat"><strong id="profileNotesCount">0</strong><span>Notes uploaded</span></div>
+        <div class="profile-stat"><strong id="profileTotalLikes">0</strong><span>Likes earned</span></div>
+        <div class="profile-stat"><strong id="profileTotalDislikes">0</strong><span>Dislikes</span></div>
+        <div class="profile-stat"><strong id="profileFollowers">0</strong><span>Followers</span></div>
+      </div>
+      <div class="profile-notes-list" id="profileNotesList"></div>
+    </div>
+  </div>
+
+  <!-- ---------- PDF Preview modal ---------- -->
+  <div class="modal-overlay hidden" id="previewModal">
+    <div class="modal-card wide">
+      <button class="modal-close" id="closePreviewBtn" aria-label="Close">✕</button>
+      <h2 id="previewTitle">Preview</h2>
+      <p class="modal-sub">Full document preview — scroll to see every page, or download below.</p>
+      <div class="preview-body" id="previewBody">
+        <p class="preview-status">Loading preview…</p>
+      </div>
+      <div class="preview-actions" id="previewActions"></div>
+    </div>
+  </div>
+
+  <script type="module" src="script.js"></script>
 
 </body>
+
 </html>
